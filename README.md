@@ -14,4 +14,4 @@ showSomma(container,a,b)
 
     visualizza il calcolo della somma di a e b nel container specificato
 
-Vai alla versione online: http://html-1.vercel.com
+Vai alla versione online: https://html-1.vercel.app

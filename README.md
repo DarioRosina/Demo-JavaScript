@@ -1,17 +1,8 @@
-### Struttura di base pagina HTML
+# Demo Interattive JavaScript
 
-[GitHub](https://github.com/DarioRosina/JavaScript)
+Questo repository contiene una serie di demo interattive progettate per illustrare il funzionamento di vari metodi degli array JavaScript e alcune funzioni di base per la manipolazione del DOM.
+L'obiettivo è fornire esempi chiari e pratici, utili specialmente per chi sta iniziando a programmare in JavaScript.
 
-showTesto(container, tit)
+**Visita la versione online:** [https://html-1.vercel.app](https://html-1.vercel.app)
 
-    mostra all'interno del container un testo semplice
-
-showSaluto(container, nome)
-
-    visualizza nel container il nome indicato, preceduto dalla formula di saluto
-
-showSomma(container,a,b)
-
-    visualizza il calcolo della somma di a e b nel container specificato
-
-Vai alla versione online: https://html-1.vercel.app
+**Repository GitHub:** [https://github.com/DarioRosina/JavaScript](https://github.com/DarioRosina/JavaScript)

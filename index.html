@@ -9,327 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/prism.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
     <style>
-        body {
-            margin: 10px;
-            padding: 10px;
-        }
-
-        .modal-body {
-            font-family: sans-serif;
-            font-size: 14px;
-            color: #fff;
-        }
-
-        .modal-body pre {
-            height: 300px;
-            overflow-y: auto;
-        }
-
-        .modal-body pre.show-code {
-            opacity: 1;
-        }
-
-        .holdLog {
-            font-family: monospace;
-            position: absolute;
-            z-index: 2;
-            font-weight: 400;
-            color: #393939;
-        }
-
-        .risultato {
-            display: none;
-            background-color: #6c757d;
-            border-color: #6c757d;
-            border-radius: 4px;
-            color: white;
-            padding: 0 4px;
-        }
-
         #risultato2 {
             background-color: blue;
         }
-
-        .table tbody tr td:first-child {
-            color: yellow;
-        }
     </style>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/prism.js"></script>
+
     <script>
-        let propsCur
-        let contaEs = 1
-        let topPrec = 0
-        let leftPrec = 0
         const posXpredef = 480
         const posYpredef = 58
-        let currentModalProps = null;
-
-        function setPos(containerId, top, left, rel) {
-            const element = document.getElementById(containerId);
-            if (!element) {
-                console.error(`Elemento con ID "${containerId}" non trovato.`);
-                return;
-            }
-            let myTop = top
-            let myLeft = left
-            if (typeof rel != 'undefined') {
-                if (rel == 'rel') {
-                myTop = topPrec + myTop
-                myLeft = leftPrec + myLeft
-                }
-            }
-            element.style.top = `${myTop}px`;
-            element.style.left = `${myLeft}px`;
-            topPrec = myTop
-            leftPrec = myLeft
-        }
-        
-        function _setupFormatElement(containerId) {
-            const element = document.getElementById(containerId);
-            if (!element) {
-                console.error(`Elemento con ID "${containerId}" non trovato per la formattazione.`);
-                return null;
-            }
-            element.classList.add('holdLog');
-            return element;
-        }
-
-        //rendering Array
-        function formatArrObj(containerId, arg, left, top, rel) {
-            const element = _setupFormatElement(containerId);
-            if (!element) return;
-
-            if (Array.isArray(arg)) {
-                const output = arg.map(el => {
-                    if (el && typeof el.name !== 'undefined' && typeof el.price !== 'undefined') {
-                        return `${el.name}  - ${el.price}`;
-                    }
-                    return 'Elemento non formattabile';
-                }).join('<br>');
-                element.innerHTML = output;
-                setPos(containerId, top, left, rel);
-            } else {
-                element.innerHTML = 'Argomento non è un array valido.';
-                setPos(containerId, top, left, rel); // Potrebbe essere utile posizionare anche il messaggio di errore
-            }
-        }
-
-        function formatArrEasy(containerId, arg, left, top, rel) {
-            const element = _setupFormatElement(containerId);
-            if (!element) return;
-
-            if (Array.isArray(arg)) {
-                const output = arg.map(el => String(el)).join('<br>');
-                element.innerHTML = output;
-                setPos(containerId, top, left, rel);
-            } else {
-                element.innerHTML = 'Argomento non è un array valido.';
-                setPos(containerId, top, left, rel);
-            }
-        }
-
-        function formatObj(containerId, arg, left, top, rel) {
-            const element = _setupFormatElement(containerId);
-            if (!element) return;
-
-            if (arg && typeof arg === 'object' && arg !== null && 'name' in arg && 'price' in arg) {
-                element.innerHTML = `${arg.name}  - ${arg.price}`;
-                setPos(containerId, top, left, rel);
-            } else {
-                element.innerHTML = `Oggetto non formattabile: ${String(arg)}`;
-                setPos(containerId, top, left, rel);
-            }
-        }
-
-        function format(containerId, arg, left, top, rel) {
-            const element = _setupFormatElement(containerId);
-            if (!element) return;
-
-            element.innerHTML = `${String(arg)} (${typeof arg})`;
-            setPos(containerId, top, left, rel)
-        }
-
-        function setTit(containerId, tit) {
-            document.getElementById('titoloEs').innerHTML = tit
-        }
-
-        function loadModal(props) {
-            propsCur = props // Salva le props correnti per il toggle
-            setTit("codice", props.title)
-
-            const codeElement = document.getElementById('codice');
-            const codeBlockContainer = codeElement ? codeElement.parentElement : null;
-            if (codeElement && codeBlockContainer) {
-                codeBlockContainer.classList.remove('show-code');
-                codeElement.textContent = props.codeString.trim();
-                Prism.highlightElement(codeElement, true, function(){
-                    setTimeout(() => {
-                        if (codeBlockContainer){
-                            codeBlockContainer.classList.add('show-code');
-                        }
-                    }, 10);
-                }); // Evidenzia la sintassi
-            }
-
-            // Pulisci i risultati precedenti e nascondili
-            const risultato1El = document.getElementById('risultato1');
-            const risultato2El = document.getElementById('risultato2');
-            risultato1El.style.display = 'none';
-            risultato1El.innerHTML = '';
-            risultato2El.style.display = 'none';
-            risultato2El.innerHTML = '';
-
-            try {
-                // Crea una funzione per eseguire il codice in modo isolato
-                // e restituisce un array con [esito1, esito2] o [esito1]
-                const executeCode = new Function(props.codeString + '; return typeof esito2 !== "undefined" ? [esito1, esito2] : [esito1];');
-                const results = executeCode();
-                const result1 = results[0];
-                const result2 = results.length > 1 ? results[1] : undefined;
-
-                // Mostra i risultati usando il formatter appropriato
-                if (props.formatter && typeof props.formatter === 'function') {
-                    props.formatter("risultato1", result1, props.posX1, props.posY1);
-
-                    if (result2 !== undefined && props.posX2 >= 0) {
-                        props.formatter("risultato2", result2, props.posX2, props.posY2, props.posRel);
-                    }
-                } else {
-                    console.error("Formatter non valido per:", props.title);
-                    risultato1El.innerHTML = 'Errore: Formatter non valido.';
-                    risultato1El.style.display = '';
-                }
-
-            } catch (error) {
-                console.error(`Errore durante l'esecuzione del codice per "${props.title}":`, error);
-                // Mostra un messaggio di errore all'utente
-                risultato1El.innerHTML = `Errore nell'esecuzione: ${error.message}`;
-                risultato1El.style.display = '';
-            }
-        }
-
-        function toggleElementDisplay(elementId) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                if (element.style.display === 'none' || element.style.display === '') {
-                    element.style.display = 'block';
-                } else {
-                    element.style.display = 'none';
-                }
-            }
-        }
-
-        function initHndlBtn(numEs) {
-            const modalElement = document.getElementById('exampleModal');
-            const toggleButton = document.getElementById('toggleRisultato');
-
-            if (!modalElement) {
-                console.error("Elemento modale #exampleModal non trovato.");
-                return;
-            }
-
-            if (toggleButton) {
-                toggleButton.addEventListener("click", () => {
-                    // Il toggle funziona su propsCur, che viene impostato in loadModal
-                    if (propsCur) {
-                        toggleElementDisplay('risultato1');
-                        // Controlla se esiste posX2 prima di fare il toggle
-                        if (propsCur.posX2 !== undefined && propsCur.posX2 >= 0) {
-                            toggleElementDisplay('risultato2');
-                        }
-                    }
-                });
-
-                modalElement.addEventListener('show.bs.modal', function (event) {
-                    // event.relatedTarget è il bottone che ha attivato la modale
-                    const button = event.relatedTarget;
-                    if (button && button.id.startsWith('btnEs')) {
-                        const esIndex = parseInt(button.id.replace('btnEs', ''), 10);
-                        if (opzEs[esIndex]) {
-                            currentModalProps = opzEs[esIndex];
-                            loadModal(currentModalProps);
-                        } else {
-                            console.error(`Configurazione opzEs[${esIndex}] non trovata.`);
-                            // Opzionalmente, impedisci l'apertura della modale o mostra un errore
-                            // event.preventDefault(); // Se vuoi impedire l'apertura
-                        }
-                    } else if (currentModalProps) {
-                        // Fallback se la modale viene aperta in altro modo e currentModalProps è già impostato
-                        loadModal(currentModalProps);
-                    }
-                });
-
-                modalElement.addEventListener('hidden.bs.modal', function (event) {
-                    document.getElementById('titoloEs').innerHTML = '';
-                    const codeElement = document.getElementById('codice');
-                    if (codeElement) {
-                        codeElement.textContent = ''; // Pulisci il contenuto
-                        const codeBlockContainer = codeElement.parentElement;
-                        if (codeBlockContainer) {
-                            codeBlockContainer.classList.remove('show-code'); // Rimuovi la classe per la prossima volta
-                        }
-                    }
-                    propsCur = null;
-                    currentModalProps = null;
-                    const risultato1El = document.getElementById('risultato1');
-                    const risultato2El = document.getElementById('risultato2');
-                    if (risultato1El) {
-                        risultato1El.style.display = 'none';
-                        risultato1El.innerHTML = '';
-                    }
-                    if (risultato2El) {
-                        risultato2El.style.display = 'none';
-                        risultato2El.innerHTML = '';
-                    }
-                });
-
-                // Ciclo per aggiungere event listener ai bottoni "demo"
-                // Assicurati che numEs corrisponda all'indice massimo in opzEs
-                for (let i = 1; i <= numEs; i++) {
-                    const button = document.getElementById(`btnEs${i}`);
-                    if (button) {
-                        button.addEventListener("click", () => {
-                            if (opzEs[i]) {
-                                currentModalProps = opzEs[i];
-                            } else {
-                                console.error(`Configurazione opzEs[${i}] non trovata.`);
-                            }
-                        });
-                    } else {
-                        console.warn(`Bottone btnEs${i} non trovato.`);
-                    }
-                }
-            } else {
-                console.error("Bottone toggleRisultato non trovato.");
-            }
-        }
-
-        function handleSearch() {
-            const searchInput = document.getElementById('searchInput');
-            const tableBody = document.getElementById('methodTableBody');
-            const rows = tableBody.getElementsByTagName('tr');
-            const searchTerm = searchInput.value.toLowerCase();
-
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                const methodCell = row.cells[0]; // Colonna "Metodo"
-                const descriptionCell = row.cells[1]; // Colonna "Descrizione"
-                let match = false;
-
-                if (methodCell && descriptionCell) {
-                    const methodText = methodCell.textContent || methodCell.innerText;
-                    const descriptionText = descriptionCell.textContent || descriptionCell.innerText;
-
-                    if (methodText.toLowerCase().includes(searchTerm) || descriptionText.toLowerCase().includes(searchTerm)) {
-                        match = true;
-                    }
-                }
-                row.style.display = match ? '' : 'none';
-            }
-        }
     </script>
 
 </head>
@@ -465,7 +154,7 @@
         </div>
 
     </div>
-
+    <script src="js/format.js"></script>
     <script>
         const arrOggetti = `[
     { name: 'Bike', price: 100 },
@@ -527,7 +216,7 @@ let outputString = "";
 myArr.forEach((el) => { outputString += el.price + "<br>"; });
 const esito1 = outputString; // Assegnamo la stringa costruita a esito1
 `,
-                posX1: posXpredef, posY1: posYpredef, posX2: -1, posY2: -1, formatter: format // format semplice per la stringa HTML
+                posX1: posXpredef, posY1: posYpredef, posX2: -1, posY2: -1, formatter: format
             },
 
 
@@ -577,26 +266,36 @@ const esito2 = myArr.includes(7);`,
                 posX1: posXpredef, posY1: posYpredef, posX2: 0, posY2: 21, posRel: "rel", formatter: format
             }
         ];
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const numEsempiValidi = opzEs.filter(Boolean).length;
-            initHndlBtn(numEsempiValidi);
-
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', handleSearch);
-            }
-
-            // Impedisci al form di ricerca di fare il submit tradizionale
-            const searchForm = document.querySelector('form.d-flex[role="search"]');
-            if (searchForm) {
-                searchForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                });
-            }
-        });
     </script>
-
+    <script src="js/domRefs.js"></script>
+    <script src="js/modalLogic.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/handlers.js"></script>
+    <script src="js/listeners.js?1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/prism.js"></script>
+    <script>
+        function loadModal(props) {
+            loadModalBase(props, executeAndDisplayResults);
+        }
+        const config = {
+            opzEs: opzEs,
+            numEs: opzEs.filter(Boolean).length,
+            onToggleButtonClick: function(currentProps) {
+                if (typeof toggleElementDisplay !== 'function') { console.error("toggleElementDisplay non definita"); return; }
+                toggleElementDisplay('risultato1');
+                if (currentProps.posX2 !== undefined && currentProps.posX2 >= 0) {
+                    toggleElementDisplay('risultato2');
+                }
+            },
+            onModalHidden: function() {
+                if (typeof resetElemento !== 'function') { console.error("resetElemento non definita"); return; }
+                resetElemento('risultato1');
+                resetElemento('risultato2');
+            }
+        };
+        addListenerBtnEs(config);
+    </script>
 </body>
 
 </html>

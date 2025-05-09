@@ -46,7 +46,7 @@ function formatArrObj(containerId, arg, left, top, rel) {
         setPos(containerId, top, left, rel);
     } else {
         element.innerHTML = 'Argomento non è un array valido.';
-        setPos(containerId, top, left, rel); // Potrebbe essere utile posizionare anche il messaggio di errore
+        setPos(containerId, top, left, rel);
     }
 }
 

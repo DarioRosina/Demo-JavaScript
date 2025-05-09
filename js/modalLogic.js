@@ -61,7 +61,7 @@ function executeAndDisplayOutput(props) {
         if (props.containerRisultato) {
             const containerDaMostrare = document.getElementById(props.containerRisultato);
             if (containerDaMostrare) {
-                containerDaMostrare.style.display = ''; // o 'block', 'flex', ecc. a seconda del CSS
+                containerDaMostrare.style.display = '';
             } else {
                 console.warn(`Contenitore risultato "${props.containerRisultato}" non trovato.`);
             }
@@ -71,7 +71,7 @@ function executeAndDisplayOutput(props) {
         console.error(`Errore durante l'esecuzione del codice per "${props.title}":`, error);
         if (risultato1El) {
             risultato1El.innerHTML = `Errore nell'esecuzione: ${error.message}`;
-            risultato1El.style.display = ''; // Mostra l'errore
+            risultato1El.style.display = '';
         }
     }
 }
@@ -80,7 +80,7 @@ function executeAndDisplayOutput(props) {
 // e chiamare un callback per gestire i risultati
 function loadModalBase(props, displayResultsCallback) {
     propsCur = props; // Salva le props correnti per il toggle
-    setTit("codice", props.title); // Assumendo che setTit sia definita globalmente o accessibile
+    setTit("codice", props.title);
 
     const codeElement = document.getElementById('codice');
     const codeBlockContainer = codeElement ? codeElement.parentElement : null;

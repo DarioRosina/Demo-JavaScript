@@ -84,3 +84,14 @@ function format(containerId, arg, left, top, rel) {
     element.innerHTML = `${String(arg)} (${typeof arg})`;
     setPos(containerId, top, left, rel)
 }
+
+function isMobileDevice() {
+    // Elenco comune di stringhe per rilevare dispositivi mobili nello User-Agent
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    return mobileRegex.test(navigator.userAgent);
+}
+
+// Se è un dispositivo mobile, cambia posXpredef a 0
+if (isMobileDevice()) {
+    posXpredef = 0;
+}

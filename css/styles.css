@@ -58,3 +58,7 @@ body {
 .navbar-brand sub {
   color: var(--border-color);
 }
+
+#methodTableBody td{
+  word-break: break-all;
+}

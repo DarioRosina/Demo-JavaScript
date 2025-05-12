@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/prism.css" rel="stylesheet" />
-    <link href="css/styles.css?1" rel="stylesheet" />
+    <link href="css/styles.css?3" rel="stylesheet" />
     <style>
         #risultato2 {
             background-color: blue;
@@ -17,7 +17,7 @@
     </style>
 
     <script>
-        const posXpredef = 480
+        let posXpredef = 480
         const posYpredef = 58
     </script>
 
@@ -42,7 +42,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="selettori.html">Selettori</a>
-                        <a class="dropdown-item" href="#">Metodi</a>
+                        <a class="dropdown-item" href="#">Array</a>
                         </div>
                     </li>
                 </ul>
@@ -68,112 +68,112 @@
                     <td>filter</td>
                     <td><strong>Crea un nuovo array</strong> con tutti gli elementi che superano un test fornito da una funzione.</td>
                     <td><button id="btnEs1" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>map</td>
                     <td><strong>Crea un nuovo array</strong> con i risultati della chiamata di una funzione fornita su ogni elemento dell'array originale.</td>
                     <td><button id="btnEs2" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>find</td>
                     <td><strong>Restituisce il valore del primo elemento</strong> nell'array che soddisfa una funzione di test fornita.</td>
                     <td><button id="btnEs3" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>findIndex</td>
                     <td><strong>Restituisce l'indice del primo elemento</strong> nell'array che soddisfa una funzione di test fornita. Altrimenti restituisce -1.</td>
                     <td><button id="btnEs4" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>forEach</td>
                     <td>Esegue una funzione fornita una volta per ogni elemento dell'array. <strong>Non restituisce un nuovo array</strong>.</td>
                     <td><button id="btnEs5" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>some</td>
                     <td>Verifica se almeno un elemento nell'array supera il test implementato dalla funzione fornita. <strong>Restituisce true o false</strong>.</td>
                     <td><button id="btnEs6" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>every</td>
                     <td>Verifica se tutti gli elementi nell'array superano il test implementato dalla funzione fornita. <strong>Restituisce true o false</strong>.</td>
                     <td><button id="btnEs7" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>reduce</td>
                     <td>Esegue una funzione 'reducer' su ciascun elemento dell'array, <strong>restituendo un solo valore</strong> (accumulatore).</td>
                     <td><button id="btnEs8" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>includes</td>
                     <td>Determina se un array include un certo valore tra i suoi elementi, <strong>restituendo true o false</strong>.</td>
                     <td><button id="btnEs9" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"> demo </button></td>
+                    data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>splice</td>
                     <td><strong>Modifica un array</strong> rimuovendo, aggiungendo o sostituendo elementi in una posizione specifica.</td>
                     <td><button id="btnEs10" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"> demo </button></td>
+                        data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>splice</td>
                     <td>Esempio di inserimento di elementi in un array.</td>
                     <td><button id="btnEs11" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"> demo </button></td>
+                        data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>splice</td>
                     <td>Esempio di sostituzione degli elementi di un array.</td>
                     <td><button id="btnEs12" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"> demo </button></td>
+                        data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>slice</td>
                     <td>Restituisce una copia superficiale di una porzione di un array (o stringa), <strong>senza modificarlo</strong>.</td>
                     <td><button id="btnEs13" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"> demo </button></td>
+                        data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>slice</td>
                     <td>Esempio di restituzione della porzione destra di un array.</td>
                     <td><button id="btnEs14" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"> demo </button></td>
+                        data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>slice</td>
                     <td>Esempio di restituzione della porzione destra di un array usando un indice negativo.</td>
                     <td><button id="btnEs15" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"> demo </button></td>
+                        data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
                 <tr>
                     <td>slice</td>
                     <td>Esempio di copia completa.</td>
                     <td><button id="btnEs16" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"> demo </button></td>
+                        data-bs-target="#exampleModal"> 🔍 </button></td>
                 </tr>
 
             </tbody>
@@ -203,7 +203,7 @@
         </div>
 
     </div>
-    <script src="js/format.js"></script>
+    <script src="js/format.js?2"></script>
     <script>
         const arrOggetti = `[
     { name: 'Bike', price: 100 },
@@ -406,7 +406,7 @@ const esito1 = myArr.slice();`,
     <script src="js/domRefs.js"></script>
     <script src="js/modalLogic.js"></script>
     <script src="js/index.js"></script>
-    <script src="js/handlers.js"></script>
+    <script src="js/handlers.js?1"></script>
     <script src="js/listeners.js?1"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/prism.js"></script>
